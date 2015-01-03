@@ -58,8 +58,8 @@ public class Vuelo {
     
 //      METODOS PARA TRATAR VUELOS
     
-    public void guardarVuelo(String avion, int idRuta, Long fechaSalida) {
-        Main.bbddop.actualizar("INSERT INTO vuelo(fechaSalida, matriculaAvion, idRuta) VALUES(" + fechaSalida +", " + avion + ", " + idRuta + ");");
+    public void guardarVuelo(String avion, int idRuta, Long fechaSalid) {
+        Main.bbddop.actualizar("INSERT INTO vuelo(fechaSalida, matriculaAvion, idRuta) VALUES('" + fechaSalid +"', '" + avion + "', " + idRuta + ");");
     }    
 
 //    

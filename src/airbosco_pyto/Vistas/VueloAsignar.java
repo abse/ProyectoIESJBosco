@@ -190,7 +190,7 @@ public class VueloAsignar extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         // Para convertir la fecha a Long
-        Calendar fechaSalida = null;
+        Calendar fechaSalida = Calendar.getInstance();
 
         // fijamos la fecha introducida por el usuario 
         fechaSalida.set(Integer.parseInt(jTextFieldAno.getText()), Integer.parseInt(jComboMes.getSelectedItem().toString()),
@@ -204,6 +204,8 @@ public class VueloAsignar extends javax.swing.JFrame {
 
         // Finalmente lo guardamos        
         vuelo.guardarVuelo(jComboAvion.getSelectedItem().toString(), idRuta, fechaSalida.getTime().getTime());
+        
+        this.dispose(); // Cerramos la ventana
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
