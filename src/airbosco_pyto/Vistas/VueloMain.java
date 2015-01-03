@@ -24,7 +24,7 @@ public class VueloMain extends javax.swing.JFrame {
 
     DefaultListModel listModel = new DefaultListModel(); // Lista pestaña Consultar
 
-    String[] columnas = {"Origen", "Destino", "Fecha Salida", "Fecha Llegada", "Duración Viaje"};
+    String[] columnas = {"ID Vuelo", "Origen", "Destino", "Fecha Salida", "Fecha Llegada", "Duración Viaje"};
     DefaultTableModel tableModel = new DefaultTableModel(columnas, 0);
 
     String[] columnasRutas = {"Identificador", "Origen", "Destino", "Duración"};
@@ -65,7 +65,7 @@ public class VueloMain extends javax.swing.JFrame {
         jListAviones = new javax.swing.JList();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableConsultar = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -100,12 +100,12 @@ public class VueloMain extends javax.swing.JFrame {
 
         jLabel2.setText("Vuelos programados:");
 
-        jTable1.setAutoCreateRowSorter(true);
-        jTable1.setModel(tableModel);
-        jTable1.setShowGrid(false);
-        jTable1.setShowHorizontalLines(true);
-        jTable1.setShowVerticalLines(true);
-        jScrollPane2.setViewportView(jTable1);
+        tableConsultar.setAutoCreateRowSorter(true);
+        tableConsultar.setModel(tableModel);
+        tableConsultar.setShowGrid(false);
+        tableConsultar.setShowHorizontalLines(true);
+        tableConsultar.setShowVerticalLines(true);
+        jScrollPane2.setViewportView(tableConsultar);
 
         jButton1.setText("Añadir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -259,6 +259,14 @@ public class VueloMain extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        // Boton de borrar
+        vuelo.borrarVuelo(Integer.parseInt(tableConsultar.getValueAt(tableConsultar.getSelectedRow(), 0).toString()));
+        
+        // actualizamos tabla
+        while (tableModel.getRowCount() != 0) {
+            tableModel.removeRow(0); // Borramos contenido tabla
+        }
+        actualizarTablaVuelos(jListAviones.getSelectedValue().toString());
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jListAvionesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListAvionesValueChanged
@@ -365,7 +373,7 @@ public class VueloMain extends javax.swing.JFrame {
 
         for (int i = 0; i < rVuelos.size(); i++) {
             String[] resultAvion = (String[]) rVuelos.get(i);
-            insertarjTableAvion(resultAvion[0], resultAvion[1], resultAvion[2], resultAvion[3], resultAvion[4]);
+            insertarjTableAvion(resultAvion[0], resultAvion[1], resultAvion[2], resultAvion[3], resultAvion[4], resultAvion[5]);
         }
 
     }
@@ -386,12 +394,12 @@ public class VueloMain extends javax.swing.JFrame {
     }
 
     // Clases AUXILIARES para tratar los datos de las tablas
-    public void insertarjTableAvion(String origen, String destino, String fechaSalida, String matriculaAvion, String duracion) {
+    public void insertarjTableAvion(String idVuelo, String origen, String destino, String fechaSalida, String matriculaAvion, String duracion) {
 
         Date fechaSalidaString = new Date(Long.valueOf(fechaSalida)); // Para convertir la fecha a formato legible
         Date fechaLlegada = sumarMinutosFechaLlegada(Integer.parseInt(duracion), Long.valueOf(fechaSalida));
 
-        tableModel.addRow(new Object[]{origen, destino, fechaSalidaString.toString(), fechaLlegada.toString(), duracion + "'"});
+        tableModel.addRow(new Object[]{idVuelo, origen, destino, fechaSalidaString.toString(), fechaLlegada.toString(), duracion + "'"});
     }
 
     public Date sumarMinutosFechaLlegada(int minutos, long fechaSalida) {
@@ -422,9 +430,9 @@ public class VueloMain extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel rutas;
     private javax.swing.JTabbedPane rutasAvion;
+    private javax.swing.JTable tableConsultar;
     private javax.swing.JTable tableRutas;
     // End of variables declaration//GEN-END:variables
 }

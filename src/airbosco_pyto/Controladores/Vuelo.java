@@ -28,11 +28,11 @@ public class Vuelo {
         try {
 
             if (matricula.equals("TODOS")) {
-                rs = queryVuelo("SELECT r.origen, r.destino, v.fechaSalida, v.matriculaAvion, r.duracion "
+                rs = queryVuelo("SELECT v.idVuelo, r.origen, r.destino, v.fechaSalida, v.matriculaAvion, r.duracion "
                         + "FROM vuelo v, ruta r "
                         + "WHERE v.idRuta = r.idRuta;");
             } else {
-                rs = queryVuelo("SELECT r.origen, r.destino, v.fechaSalida, v.matriculaAvion, r.duracion "
+                rs = queryVuelo("SELECT v.idVuelo, r.origen, r.destino, v.fechaSalida, v.matriculaAvion, r.duracion "
                         + "FROM vuelo v, ruta r "
                         + "WHERE v.matriculaAvion ='" + matricula + "' AND v.idRuta = r.idRuta;");
             }
@@ -40,7 +40,7 @@ public class Vuelo {
             rowsAvionesVuelo = new ArrayList();
 
             while (rs.next()) {
-                rowsAvionesVuelo.add(new String[]{rs.getString("r.origen"),
+                rowsAvionesVuelo.add(new String[]{rs.getString("v.idVuelo"), rs.getString("r.origen"),
                     rs.getString("r.destino"), Long.toString(rs.getLong("v.fechaSalida")), rs.getString("v.matriculaAvion"),
                     rs.getString("r.duracion")});
             }
@@ -61,6 +61,11 @@ public class Vuelo {
     public void guardarVuelo(String avion, int idRuta, Long fechaSalid) {
         Main.bbddop.actualizar("INSERT INTO vuelo(fechaSalida, matriculaAvion, idRuta) VALUES('" + fechaSalid +"', '" + avion + "', " + idRuta + ");");
     }    
+    
+    public void borrarVuelo(int idVuelo) {
+        Main.bbddop.actualizar("DELETE FROM vuelo WHERE idVuelo = " + idVuelo + ";");
+    }
+    
 
 //    
 //    METODOS PARA TRATAR RUTAS
