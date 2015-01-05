@@ -58,6 +58,28 @@ public class Vuelo {
     
 //      METODOS PARA TRATAR VUELOS
     
+    public String[] consultarVuelo(int idRuta) {
+        
+        Object[] resultado = null;
+        
+        try {
+            rs = queryVuelo("SELECT v.fechaSalida, v.matriculaAvion, r.origen, r.destino, r.duracion "
+                    + "FROM vuelo v, ruta r "
+                    + "WHERE v.idRuta ='" + idRuta + "' AND v.idRuta = r.idRuta;");
+            
+            while(rs.next()) {
+                resultado = new Object[] { rs.getLong("v.fechaSalida"), rs.getString("v.matriculaAvion"), 
+                rs.getString("r.origen"), rs.getString("r.destino"), rs.getInt("r.duracion") };
+            }
+            
+            rs.close();
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+    }    
+    
     public void guardarVuelo(String avion, int idRuta, Long fechaSalid) {
         Main.bbddop.actualizar("INSERT INTO vuelo(fechaSalida, matriculaAvion, idRuta) VALUES('" + fechaSalid +"', '" + avion + "', " + idRuta + ");");
     }    

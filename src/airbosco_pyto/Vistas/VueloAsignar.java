@@ -58,6 +58,43 @@ public class VueloAsignar extends javax.swing.JFrame {
         }
 
     }
+    
+    public VueloAsignar(int idVuelo) {
+        initComponents();
+
+        // Rellenamos Aviones
+        ArrayList avionAr = avion.avionesArrayList();
+
+        for (int i = 0; i < avionAr.size(); i++) {
+            String[] resulAux = (String[]) avionAr.get(i);
+            jComboAvion.addItem(resulAux[0]); // añadimos las matriculas solo
+        }
+
+        // Rellenamos minutos: 0 - 59m
+        for (int i = 0; i < 60; i++) {
+            jComboMinutos.addItem(i);
+        }
+
+        // Rellenamos dias: 0 - 31
+        for (int i = 1; i < 32; i++) {
+            jComboDia.addItem(i);
+        }
+
+        // Rellenamos meses: 1 - 12
+        for (int i = 1; i < 13; i++) {
+            jComboMes.addItem(i);
+        }
+
+        // Rellenamos rutas
+        ArrayList rutasAr = vuelo.rutasListar();
+
+        for (int i = 0; i < rutasAr.size(); i++) {
+            String[] strAux = (String[]) rutasAr.get(i);
+            String strAuxFinal = strAux[0] + " " + strAux[1] + " - " + strAux[2] + " " + strAux[3] + "'";
+            jComboRuta.addItem(strAuxFinal);
+        }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

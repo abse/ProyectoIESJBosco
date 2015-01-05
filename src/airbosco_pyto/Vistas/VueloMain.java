@@ -115,6 +115,11 @@ public class VueloMain extends javax.swing.JFrame {
         });
 
         jButton2.setText("Editar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Borrar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -323,6 +328,13 @@ public class VueloMain extends javax.swing.JFrame {
         VueloAsignar va = new VueloAsignar();
         va.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        // Editar Vuelo-Ruta
+        VueloAsignar va = new VueloAsignar(Integer.parseInt((String) tableRutas.getValueAt(tableRutas.getSelectedRow(), 0)));
+        va.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
