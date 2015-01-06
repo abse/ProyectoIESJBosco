@@ -7,7 +7,9 @@ package airbosco_pyto;
 
 import airbosco_pyto.Controladores.Avion;
 import airbosco_pyto.Controladores.Vuelo;
+import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,17 +19,29 @@ public class Main extends javax.swing.JFrame {
 
     public static BBDDinterface bbddop = new BBDDinterface(); // Interfaz de la BBDD
     public static Consola consola = new Consola();
-    
+
     Avion avion = new Avion();
     Vuelo vuelo = new Vuelo();
-    
-    
+
+    // Tabla del Principal con todos los vuelos ordenados por fecha
+    String[] columnas = {"ID Vuelo", "Origen", "Destino", "Fecha Salida", "Duración Viaje"};
+    DefaultTableModel tableModel = new DefaultTableModel(columnas, 0);
+
     /**
      * Creates new form NewJFrame
      */
     public Main() {
         consola.insertarRow("Sistema", "Aplicación Iniciada");
         initComponents();
+
+        // Rellenamos tabla
+        ArrayList rVuelos = vuelo.vueloAvionArrayList("TODOS");
+
+        for (int i = 0; i < rVuelos.size(); i++) {
+            String[] resultAvion = (String[]) rVuelos.get(i);
+            insertarjTableAvion(resultAvion[0], resultAvion[1], resultAvion[2], resultAvion[3], resultAvion[4], resultAvion[5]);
+        }
+
     }
 
     /**
@@ -53,17 +67,7 @@ public class Main extends javax.swing.JFrame {
         setTitle("AIRBOSCO - Principal");
         setResizable(false);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable1.setModel(tableModel);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Próximos Vuelos");
@@ -144,7 +148,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         consola.setVisible(true);
         consola.insertarRow("Sistema", "Abriendo Consola");
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -188,9 +192,17 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public static void insertarConsola(String modulo, String descripcion) {
         consola.insertarRow(modulo, descripcion);
+    }
+
+    // Clases AUXILIARES para tratar los datos de las tablas
+    public void insertarjTableAvion(String idVuelo, String origen, String destino, String fechaSalida, String matriculaAvion, String duracion) {
+
+        Date fechaSalidaString = new Date(Long.valueOf(fechaSalida)); // Para convertir la fecha a formato legible
+
+        tableModel.addRow(new Object[]{idVuelo, origen, destino, fechaSalidaString.toString(), duracion + "'"});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
