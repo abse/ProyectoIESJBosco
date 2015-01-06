@@ -21,6 +21,8 @@ public class VueloAsignar extends javax.swing.JFrame {
      */
     Vuelo vuelo = new Vuelo();
     Avion avion = new Avion();
+    int modo = 0; // modo == 1 edicion
+    int idVueloX = 0; // para almacenar el vuelo en caso de Editar
 
     public VueloAsignar() {
         initComponents();
@@ -58,33 +60,64 @@ public class VueloAsignar extends javax.swing.JFrame {
         }
 
     }
-    
+
     // CONSTRUCTOR PARA EDITAR
-    public VueloAsignar(int idRuta) {
+    public VueloAsignar(int idVuelo) {
         initComponents();
-        
+
+        // Cambiamos modo de edicion
+        modo = 1;
+        idVueloX = idVuelo;
+
         // Consultamos el vuelo con la idRuta pasada al constructor
-        Object[] vueloAr = vuelo.consultarVuelo(idRuta);
-        
+        Object[] vueloAr = vuelo.consultarVuelo(idVuelo);
+
         jComboAvion.addItem(vueloAr[1]); // añadimos la matricula del avion
         jComboAvion.setEnabled(false); // No se puede desplegar
-        
+
         Calendar fechaSalidaEditar = Calendar.getInstance();
         fechaSalidaEditar.setTimeInMillis((Long) vueloAr[0]);
+
+        // Rellenamos Horas: 0 - 23
+        for (int i = 0; i < 24; i++) {
+            jComboHora.addItem(i);
+
+            // Seleccionamos los minutos a editar
+            if (fechaSalidaEditar.get(Calendar.HOUR_OF_DAY) == i) {
+                jComboHora.setSelectedIndex(jComboHora.getItemCount() - 1);
+            }
+
+        }
 
         // Rellenamos minutos: 0 - 59m
         for (int i = 0; i < 60; i++) {
             jComboMinutos.addItem(i);
+
+            // Seleccionamos los minutos a editar
+            if (fechaSalidaEditar.get(Calendar.MINUTE) == i) {
+                jComboMinutos.setSelectedIndex(jComboMinutos.getItemCount() - 1);
+            }
+
         }
 
         // Rellenamos dias: 0 - 31
         for (int i = 1; i < 32; i++) {
             jComboDia.addItem(i);
+
+            // Seleccionamos el dia a editar
+            if (fechaSalidaEditar.get(Calendar.DAY_OF_MONTH) == i) {
+                jComboDia.setSelectedIndex(jComboDia.getItemCount() - 1);
+            }
         }
 
         // Rellenamos meses: 1 - 12
         for (int i = 1; i < 13; i++) {
             jComboMes.addItem(i);
+
+            // Seleccionamos el mes a editar
+            if (fechaSalidaEditar.get(Calendar.MONTH) == i) {
+                jComboMes.setSelectedIndex(jComboMes.getItemCount() - 1);
+            }
         }
 
         // Rellenamos rutas
@@ -94,14 +127,13 @@ public class VueloAsignar extends javax.swing.JFrame {
             String[] strAux = (String[]) rutasAr.get(i);
             String strAuxFinal = strAux[0] + " " + strAux[1] + " - " + strAux[2] + " " + strAux[3] + "'";
             jComboRuta.addItem(strAuxFinal);
-            
+
             // Para dejar selecciona la ruta del vuelo
-            if(strAux[0].equals(Integer.toString(idRuta))) {
+            if (strAux[0].equals(Integer.toString((int) vueloAr[2]))) {
                 // Restamos 1 por que la posicion 1 es == 0!
                 jComboRuta.setSelectedIndex(jComboRuta.getItemCount() - 1);
-                System.out.println(jComboRuta.getItemCount());
             }
-            
+
         }
 
     }
@@ -159,8 +191,6 @@ public class VueloAsignar extends javax.swing.JFrame {
 
         jLabel7.setText("/");
 
-        jComboHora.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,7 +226,7 @@ public class VueloAsignar extends javax.swing.JFrame {
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(0, 12, Short.MAX_VALUE))
                             .addComponent(jComboAvion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -249,9 +279,14 @@ public class VueloAsignar extends javax.swing.JFrame {
         String[] idRutaRow = (String[]) rutasAr.get(jComboRuta.getSelectedIndex());
         int idRuta = Integer.parseInt(idRutaRow[0]);
 
-        // Finalmente lo guardamos        
-        vuelo.guardarVuelo(jComboAvion.getSelectedItem().toString(), idRuta, fechaSalida.getTime().getTime());
-        
+        if (modo == 0) {
+            // Finalmente lo guardamos        
+            vuelo.guardarVuelo(jComboAvion.getSelectedItem().toString(), idRuta, fechaSalida.getTime().getTime());
+        } else if (modo == 1) {
+            // O lo actualizamos
+            vuelo.actualizarVuelo(idVueloX, idRuta, fechaSalida.getTime().getTime());
+        }
+
         this.dispose(); // Cerramos la ventana
     }//GEN-LAST:event_jButton1ActionPerformed
 

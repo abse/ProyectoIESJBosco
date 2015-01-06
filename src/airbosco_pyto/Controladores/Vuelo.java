@@ -58,18 +58,18 @@ public class Vuelo {
     
 //      METODOS PARA TRATAR VUELOS
     
-    public Object[] consultarVuelo(int idRuta) {
+    public Object[] consultarVuelo(int idVuelo) {
         
         Object[] resultado = null;
         
         try {
-            rs = queryVuelo("SELECT v.fechaSalida, v.matriculaAvion, r.origen, r.destino, r.duracion "
+            rs = queryVuelo("SELECT v.fechaSalida, v.matriculaAvion, v.idRuta, r.origen, r.destino, r.duracion "
                     + "FROM vuelo v, ruta r "
-                    + "WHERE v.idRuta ='" + idRuta + "' AND v.idRuta = r.idRuta;");
+                    + "WHERE v.idVuelo ='" + idVuelo + "' AND v.idRuta = r.idRuta;");
             
             while(rs.next()) {
                 resultado = new Object[] { rs.getLong("v.fechaSalida"), rs.getString("v.matriculaAvion"), 
-                rs.getString("r.origen"), rs.getString("r.destino"), rs.getInt("r.duracion") };
+                rs.getInt("v.idRuta") ,rs.getString("r.origen"), rs.getString("r.destino"), rs.getInt("r.duracion") };
             }
             
             rs.close();
@@ -85,6 +85,13 @@ public class Vuelo {
     public void guardarVuelo(String avion, int idRuta, Long fechaSalid) {
         Main.bbddop.actualizar("INSERT INTO vuelo(fechaSalida, matriculaAvion, idRuta) VALUES('" + fechaSalid +"', '" + avion + "', " + idRuta + ");");
     }    
+    
+    public void actualizarVuelo(int idVuelo, int idRuta, Long fechaSalid) {
+        Main.bbddop.actualizar("UPDATE vuelo "
+                + "SET idRuta = " + idRuta + ", "
+                + "fechaSalida = " + fechaSalid + " "
+                + "WHERE idVuelo = " + idVuelo +";");
+    }
     
     public void borrarVuelo(int idVuelo) {
         Main.bbddop.actualizar("DELETE FROM vuelo WHERE idVuelo = " + idVuelo + ";");
