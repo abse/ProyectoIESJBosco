@@ -58,7 +58,7 @@ public class Vuelo {
     
 //      METODOS PARA TRATAR VUELOS
     
-    public String[] consultarVuelo(int idRuta) {
+    public Object[] consultarVuelo(int idRuta) {
         
         Object[] resultado = null;
         
@@ -77,7 +77,9 @@ public class Vuelo {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-
+        
+        return resultado;
+        
     }    
     
     public void guardarVuelo(String avion, int idRuta, Long fechaSalid) {

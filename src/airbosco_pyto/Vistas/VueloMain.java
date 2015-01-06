@@ -332,7 +332,8 @@ public class VueloMain extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         // Editar Vuelo-Ruta
-        VueloAsignar va = new VueloAsignar(Integer.parseInt((String) tableRutas.getValueAt(tableRutas.getSelectedRow(), 0)));
+        int idRutaA = Integer.parseInt((String) tableConsultar.getValueAt(tableConsultar.getSelectedRow(), 0));
+        VueloAsignar va = new VueloAsignar(idRutaA);
         va.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 

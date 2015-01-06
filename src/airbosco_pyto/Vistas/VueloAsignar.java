@@ -59,16 +59,18 @@ public class VueloAsignar extends javax.swing.JFrame {
 
     }
     
-    public VueloAsignar(int idVuelo) {
+    // CONSTRUCTOR PARA EDITAR
+    public VueloAsignar(int idRuta) {
         initComponents();
-
-        // Rellenamos Aviones
-        ArrayList avionAr = avion.avionesArrayList();
-
-        for (int i = 0; i < avionAr.size(); i++) {
-            String[] resulAux = (String[]) avionAr.get(i);
-            jComboAvion.addItem(resulAux[0]); // añadimos las matriculas solo
-        }
+        
+        // Consultamos el vuelo con la idRuta pasada al constructor
+        Object[] vueloAr = vuelo.consultarVuelo(idRuta);
+        
+        jComboAvion.addItem(vueloAr[1]); // añadimos la matricula del avion
+        jComboAvion.setEnabled(false); // No se puede desplegar
+        
+        Calendar fechaSalidaEditar = Calendar.getInstance();
+        fechaSalidaEditar.setTimeInMillis((Long) vueloAr[0]);
 
         // Rellenamos minutos: 0 - 59m
         for (int i = 0; i < 60; i++) {
@@ -92,6 +94,14 @@ public class VueloAsignar extends javax.swing.JFrame {
             String[] strAux = (String[]) rutasAr.get(i);
             String strAuxFinal = strAux[0] + " " + strAux[1] + " - " + strAux[2] + " " + strAux[3] + "'";
             jComboRuta.addItem(strAuxFinal);
+            
+            // Para dejar selecciona la ruta del vuelo
+            if(strAux[0].equals(Integer.toString(idRuta))) {
+                // Restamos 1 por que la posicion 1 es == 0!
+                jComboRuta.setSelectedIndex(jComboRuta.getItemCount() - 1);
+                System.out.println(jComboRuta.getItemCount());
+            }
+            
         }
 
     }
@@ -122,7 +132,7 @@ public class VueloAsignar extends javax.swing.JFrame {
         jComboAvion = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Asginar Vuelo-Ruta");
+        setTitle("Asignar Vuelo-Ruta");
         setAlwaysOnTop(true);
         setResizable(false);
 
