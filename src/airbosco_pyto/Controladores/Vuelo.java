@@ -30,13 +30,13 @@ public class Vuelo {
             if (matricula.equals("TODOS")) {
                 rs = queryVuelo("SELECT v.idVuelo, r.origen, r.destino, v.fechaSalida, v.matriculaAvion, r.duracion "
                         + "FROM vuelo v, ruta r "
-                        + "WHERE v.idRuta = r.idRuta"
-                        + ";");
+                        + "WHERE v.idRuta = r.idRuta "
+                        + "ORDER BY v.idVuelo DESC;");
             } else {
                 rs = queryVuelo("SELECT v.idVuelo, r.origen, r.destino, v.fechaSalida, v.matriculaAvion, r.duracion "
                         + "FROM vuelo v, ruta r "
-                        + "WHERE v.matriculaAvion ='" + matricula + "' AND v.idRuta = r.idRuta"
-                        + ";");
+                        + "WHERE v.matriculaAvion ='" + matricula + "' AND v.idRuta = r.idRuta "
+                        + "ORDER BY v.idVuelo DESC;");
             }
 
             rowsAvionesVuelo = new ArrayList();

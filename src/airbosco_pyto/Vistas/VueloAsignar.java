@@ -34,6 +34,11 @@ public class VueloAsignar extends javax.swing.JFrame {
             String[] resulAux = (String[]) avionAr.get(i);
             jComboAvion.addItem(resulAux[0]); // añadimos las matriculas solo
         }
+        
+        // Rellenamos horas: 0 - 23h
+        for(int i = 0; i < 24; i++) {
+            jComboHora.addItem(i);
+        }
 
         // Rellenamos minutos: 0 - 59m
         for (int i = 0; i < 60; i++) {

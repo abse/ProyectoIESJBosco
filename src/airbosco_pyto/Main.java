@@ -54,12 +54,13 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTablePrincipal = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
 
@@ -67,8 +68,8 @@ public class Main extends javax.swing.JFrame {
         setTitle("AIRBOSCO - Principal");
         setResizable(false);
 
-        jTable1.setModel(tableModel);
-        jScrollPane1.setViewportView(jTable1);
+        jTablePrincipal.setModel(tableModel);
+        jScrollPane1.setViewportView(jTablePrincipal);
 
         jLabel1.setText("Próximos Vuelos");
 
@@ -95,6 +96,13 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("Refrescar Tabla");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
         jMenuBar1.add(jMenu1);
 
@@ -109,7 +117,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -127,7 +136,9 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -156,6 +167,23 @@ public class Main extends javax.swing.JFrame {
         vuelo.showVueloMain();
         consola.insertarRow("Sistema", "Abriendo Vuelo");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        
+        // Vaciamos tabla
+        while (tableModel.getRowCount() != 0) {
+            tableModel.removeRow(0);
+        }
+        
+        // Rellenamos tabla
+        ArrayList rVuelos = vuelo.vueloAvionArrayList("TODOS");
+
+        for (int i = 0; i < rVuelos.size(); i++) {
+            String[] resultAvion = (String[]) rVuelos.get(i);
+            insertarjTableAvion(resultAvion[0], resultAvion[1], resultAvion[2], resultAvion[3], resultAvion[4], resultAvion[5]);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,10 +238,11 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTablePrincipal;
     // End of variables declaration//GEN-END:variables
 }
